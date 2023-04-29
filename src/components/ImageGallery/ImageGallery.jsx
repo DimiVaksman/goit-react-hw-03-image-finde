@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { API } from '../services/API';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
+// import { Button } from 'components/Button/Button';
+import { GalleryList } from "./ImageGallery.styled";
 
 const Status = {
   IDLE: 'idle',
@@ -11,9 +13,10 @@ const Status = {
 };
 
 export class ImageGallery extends Component {
-  // static PropTypes = {
-  //   value: PropTypes.string.isRequired,
-  // };
+
+  static propTypes = {
+    value: PropTypes.string.isRequired,
+  }
 
   state = {
     value: '',
@@ -59,6 +62,13 @@ export class ImageGallery extends Component {
     }
   }
 
+  handleLoadMore = () => {
+    this.setState(prevState => ({ page: prevState.page + 1 }));
+  };
+
+
+  
+
   render() {
     const { images, error, status, page, totalPages } = this.state;
 
@@ -71,7 +81,7 @@ export class ImageGallery extends Component {
     }
 
     if (status === 'rejected') {
-      return <div>error</div>;
+      return <div>{error}</div>;
     }
 
     if (images.length === 0) {
@@ -81,13 +91,20 @@ export class ImageGallery extends Component {
     if (status === 'resolved') {
       return (
         <>
-          <ul>
+          <GalleryList>
             {images.map(image => (
               <ImageGalleryItem key={image.id} item={image} />
             ))}
-          </ul>
+
+            {/* <Button LoadMore={this.handleLoadMore}/> */}
+          </GalleryList>
+          {images.length > 0 && status !== 'pending' && page <= totalPages && (
+            <button onClick={this.handleLoadMore}>Load More</button>
+          )}
         </>
       );
     }
   }
 }
+
+
