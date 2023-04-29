@@ -2,8 +2,10 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { API } from '../services/API';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
-// import { Button } from 'components/Button/Button';
-import { GalleryList } from "./ImageGallery.styled";
+import { Oval } from 'react-loader-spinner';
+import {Modal} from '../Modal/Modal'
+import { Button } from 'components/Button/Button';
+import { GalleryList } from './ImageGallery.styled';
 
 const Status = {
   IDLE: 'idle',
@@ -12,11 +14,11 @@ const Status = {
   REJECTED: 'rejected',
 };
 
-export class ImageGallery extends Component {
 
+export class ImageGallery extends Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
-  }
+  };
 
   state = {
     value: '',
@@ -25,12 +27,26 @@ export class ImageGallery extends Component {
     status: Status.IDLE,
 
     page: 1,
-
     totalPages: 0,
-    isModal: false,
+
+    isShowModal: false,
+    modalData: { img: '', tags: '' },
+
   };
 
-  getFormProps(nextProps, prevState) {
+  setModalData = modalData => {
+  this.setState({modalData, isShowModal: true });
+  };
+
+  handleModalClose = () => {
+    this.setState({isShowModal: false})}
+
+
+
+
+
+
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (prevState.value !== nextProps.value) {
       return { page: 1, value: nextProps.value };
     }
@@ -45,6 +61,7 @@ export class ImageGallery extends Component {
 
     if (prevValue !== nextValue || prevState.page !== page) {
       this.setState({ status: Status.PENDING });
+
       if (this.state.error) {
         this.setState({ error: null });
       }
@@ -53,7 +70,7 @@ export class ImageGallery extends Component {
         .then(images => {
           this.setState(prevState => ({
             images:
-              page === 1 ? images.hits : [...prevState.images, images.hits],
+              page === 1 ? images.hits : [...prevState.images, ...images.hits],
             status: Status.RESOLVED,
             totalPages: Math.floor(images.totalHits / 12),
           }));
@@ -62,22 +79,20 @@ export class ImageGallery extends Component {
     }
   }
 
-  handleLoadMore = () => {
+  handleLoadMore = e => {
+    e.preventDefault();
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
 
-
-  
-
   render() {
-    const { images, error, status, page, totalPages } = this.state;
+    const { images, error, status, page, totalPages, isShowModal, modalData} = this.state;
 
     if (status === 'idle') {
-      return <div>find images</div>;
+      return <p> Let's find the pictures </p>;
     }
 
     if (status === 'pending') {
-      return <div> loading...</div>;
+      return <Oval color="#00BFFF" height={80} width={80} />;
     }
 
     if (status === 'rejected') {
@@ -93,18 +108,18 @@ export class ImageGallery extends Component {
         <>
           <GalleryList>
             {images.map(image => (
-              <ImageGalleryItem key={image.id} item={image} />
+              <ImageGalleryItem key={image.id} item={image} onImgClick={this.setModalData}/>
             ))}
-
-            {/* <Button LoadMore={this.handleLoadMore}/> */}
           </GalleryList>
           {images.length > 0 && status !== 'pending' && page <= totalPages && (
-            <button onClick={this.handleLoadMore}>Load More</button>
+            <Button onClick={this.handleLoadMore} />
           )}
+          {isShowModal && (
+            <Modal modalData={modalData} closeModal={this.handleModalClose} />
+          )}
+
         </>
       );
     }
   }
 }
-
-

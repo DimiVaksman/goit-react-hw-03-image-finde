@@ -1,7 +1,14 @@
-export const Button = ({LoadMore}) => {
-    return(
-        <div>
-            <button type="button" onClick={() => LoadMore}>Load more</button>
-        </div>
-    )
-}
+import PropTypes from 'prop-types';
+
+export const Button = ({ onClick = null }) => {
+  return (
+    <button type="button" onClick={onClick}>
+      Load More
+    </button>
+  );
+};
+
+Button.propTypes = {
+  onClick: PropTypes.func,
+  children: PropTypes.any,
+};
