@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import { API } from '../Services/API';
+import { API } from '../services/API';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
 import { Modal } from '../Modal/Modal';
 import { Button } from 'components/Button/Button';
