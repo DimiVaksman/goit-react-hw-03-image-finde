@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import {ImgList} from './ImageGalleryItem.styled'
 
 export const ImageGalleryItem = ({ item, onImgClick }) => {
   const { largeImageURL, tags, webformatURL } = item;
@@ -11,7 +12,7 @@ export const ImageGalleryItem = ({ item, onImgClick }) => {
       }}
     >
       <div>
-        <img src={webformatURL} alt={tags} width="320" loading="lazy" />
+        <ImgList src={webformatURL} alt={tags} width="320" height='200px' loading="lazy" />
       </div>
     </li>
   );

@@ -5,7 +5,7 @@ export const Overlay = styled.div`
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 105vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,7 +13,9 @@ export const Overlay = styled.div`
   z-index: 1200;
 `
 
-  export const StyledlModal = styled.div `  
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 24px);
+  export const Tags = styled.p `  
+color: #fff;
+text-align: center;
+font-size: 22px;
+
 `

@@ -2,11 +2,11 @@ import PropTypes from 'prop-types';
 import { Component } from 'react';
 import { API } from '../services/API';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
-import { Oval } from 'react-loader-spinner';
 import {Modal} from '../Modal/Modal'
 import { Button } from 'components/Button/Button';
-import { GalleryList } from './ImageGallery.styled';
-
+import { GalleryList,BtnBackground, Text,Oops } from './ImageGallery.styled';
+import {Spinner} from '../Spinner/Spinner'
+ 
 const Status = {
   IDLE: 'idle',
   PENDING: 'pending',
@@ -39,6 +39,7 @@ export class ImageGallery extends Component {
   };
 
   handleModalClose = () => {
+    
     this.setState({isShowModal: false})}
 
 
@@ -88,11 +89,12 @@ export class ImageGallery extends Component {
     const { images, error, status, page, totalPages, isShowModal, modalData} = this.state;
 
     if (status === 'idle') {
-      return <p> Let's find the pictures </p>;
+      return <Text> Let's find the pictures </Text>;
     }
 
     if (status === 'pending') {
-      return <Oval color="#00BFFF" height={80} width={80} />;
+      return <Spinner/>
+
     }
 
     if (status === 'rejected') {
@@ -100,7 +102,7 @@ export class ImageGallery extends Component {
     }
 
     if (images.length === 0) {
-      return <div>Oops... </div>;
+      return <Oops>Oops... </Oops>;
     }
 
     if (status === 'resolved') {
@@ -111,9 +113,11 @@ export class ImageGallery extends Component {
               <ImageGalleryItem key={image.id} item={image} onImgClick={this.setModalData}/>
             ))}
           </GalleryList>
-          {images.length > 0 && status !== 'pending' && page <= totalPages && (
+<BtnBackground>
+{images.length > 0 && status !== 'pending' && page <= totalPages && (
             <Button onClick={this.handleLoadMore} />
           )}
+</BtnBackground>
           {isShowModal && (
             <Modal modalData={modalData} closeModal={this.handleModalClose} />
           )}
