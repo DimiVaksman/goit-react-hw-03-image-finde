@@ -41,9 +41,9 @@ export const SearchInput = styled.input`
   font-weight: 500;
   transition: all 0.2s ease-in-out;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-padding-top: 2px;
-padding-bottom: 2px;
-height: 50px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  height: 50px;
 
   :hover {
     background: rgba(255, 255, 255, 0.1);
@@ -80,8 +80,8 @@ export const SearchButton = styled.button`
   transition: all 0.2s ease-in-out;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
   position: absolute;
-    left: 20px;
-    top: 107px;
+  left: 20px;
+  top: 107px;
 
   :hover {
     background: rgba(255, 255, 255, 0.1);

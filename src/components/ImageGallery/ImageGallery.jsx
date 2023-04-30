@@ -1,19 +1,18 @@
 import PropTypes from 'prop-types';
 import { Component } from 'react';
-import { API } from '../services/API';
+import { API } from '../Services/API';
 import { ImageGalleryItem } from '../ImageGalleryItem/ImageGalleryItem';
-import {Modal} from '../Modal/Modal'
+import { Modal } from '../Modal/Modal';
 import { Button } from 'components/Button/Button';
-import { GalleryList,BtnBackground, Text,Oops } from './ImageGallery.styled';
-import {Spinner} from '../Spinner/Spinner'
- 
+import { GalleryList, BtnBackground, Text, Oops } from './ImageGallery.styled';
+import { Spinner } from '../Spinner/Spinner';
+
 const Status = {
   IDLE: 'idle',
   PENDING: 'pending',
   RESOLVED: 'resolved',
   REJECTED: 'rejected',
 };
-
 
 export class ImageGallery extends Component {
   static propTypes = {
@@ -31,21 +30,15 @@ export class ImageGallery extends Component {
 
     isShowModal: false,
     modalData: { img: '', tags: '' },
-
   };
 
   setModalData = modalData => {
-  this.setState({modalData, isShowModal: true });
+    this.setState({ modalData, isShowModal: true });
   };
 
   handleModalClose = () => {
-    
-    this.setState({isShowModal: false})}
-
-
-
-
-
+    this.setState({ isShowModal: false });
+  };
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (prevState.value !== nextProps.value) {
@@ -86,15 +79,15 @@ export class ImageGallery extends Component {
   };
 
   render() {
-    const { images, error, status, page, totalPages, isShowModal, modalData} = this.state;
+    const { images, error, status, page, totalPages, isShowModal, modalData } =
+      this.state;
 
     if (status === 'idle') {
       return <Text> Let's find the pictures </Text>;
     }
 
     if (status === 'pending') {
-      return <Spinner/>
-
+      return <Spinner />;
     }
 
     if (status === 'rejected') {
@@ -102,7 +95,7 @@ export class ImageGallery extends Component {
     }
 
     if (images.length === 0) {
-      return <Oops>Oops... </Oops>;
+      return <Oops>Try again, nothing found </Oops>;
     }
 
     if (status === 'resolved') {
@@ -110,18 +103,21 @@ export class ImageGallery extends Component {
         <>
           <GalleryList>
             {images.map(image => (
-              <ImageGalleryItem key={image.id} item={image} onImgClick={this.setModalData}/>
+              <ImageGalleryItem
+                key={image.id}
+                item={image}
+                onImgClick={this.setModalData}
+              />
             ))}
           </GalleryList>
-<BtnBackground>
-{images.length > 0 && status !== 'pending' && page <= totalPages && (
-            <Button onClick={this.handleLoadMore} />
-          )}
-</BtnBackground>
+          <BtnBackground>
+            {images.length > 0 &&
+              status !== 'pending' &&
+              page <= totalPages && <Button onClick={this.handleLoadMore} />}
+          </BtnBackground>
           {isShowModal && (
             <Modal modalData={modalData} closeModal={this.handleModalClose} />
           )}
-
         </>
       );
     }

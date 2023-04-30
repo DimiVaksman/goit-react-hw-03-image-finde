@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
-import { Overlay,Tags } from './Modal.styled';
-import {ImgList} from '../ImageGalleryItem/ImageGalleryItem.styled'
+import { Overlay, Tags } from './Modal.styled';
+import { ImgList } from '../ImageGalleryItem/ImageGalleryItem.styled';
 
 const modalRoot = document.querySelector('#modal-root');
 
@@ -41,7 +41,7 @@ export class Modal extends Component {
     return createPortal(
       <Overlay onClick={this.handleBackdropeClick}>
         <div>
-          <ImgList src={largeImageURL} alt={tags} width='900'/>
+          <ImgList src={largeImageURL} alt={tags} width="900" />
           <Tags>{tags}</Tags>
         </div>
       </Overlay>,
